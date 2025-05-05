@@ -137,7 +137,8 @@ const MainPage: React.FC = () => {
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter') handleSend();
-  };
+  };       
+  
 
   // 페르소나 선택 시 초기 메시지 추가
   const handlePersonaSelect = (persona: Persona) => {
