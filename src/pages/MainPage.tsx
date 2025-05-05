@@ -138,7 +138,8 @@ const MainPage: React.FC = () => {
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter') handleSend();
   };       
-  
+
+
 
   // 페르소나 선택 시 초기 메시지 추가
   const handlePersonaSelect = (persona: Persona) => {
@@ -146,6 +147,7 @@ const MainPage: React.FC = () => {
     setMessages([
       { from: 'persona', text: `${persona.name}입니다! 무엇이 궁금한가요?` }
     ]);
+    
   };
 
   // 기록 클릭 핸들러 추가
