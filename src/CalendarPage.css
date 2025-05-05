@@ -1,0 +1,128 @@
+.calendar-root {
+  min-height: 100vh;
+  background: #f6f8f7;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.main-nav {
+  width: 100%;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.calendar-container {
+  background: #fff;
+  border-radius: 20px;
+  box-shadow: 0 2px 16px rgba(0,0,0,0.07);
+  margin: 48px auto 0 auto;
+  padding: 36px 36px 32px 36px;
+  max-width: 1100px;
+  width: 100%;
+  min-height: 620px;
+  display: flex;
+  flex-direction: column;
+}
+.calendar-header-row {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  margin-bottom: 18px;
+}
+.calendar-year {
+  font-size: 2.7rem;
+  font-weight: 800;
+  color: #d3d3d3;
+  margin-right: 10px;
+  letter-spacing: -2px;
+}
+.calendar-month {
+  font-size: 2.7rem;
+  font-weight: 700;
+  color: #222;
+  margin-right: 40px;
+  letter-spacing: -2px;
+}
+.calendar-legend {
+  display: flex;
+  gap: 18px;
+  margin-right: 18px;
+}
+.legend-dot {
+  display: inline-block;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  margin-right: 6px;
+  vertical-align: middle;
+}
+.google-sync-btn {
+  background: #f6f8f7;
+  border: none;
+  border-radius: 18px;
+  padding: 7px 22px;
+  font-size: 1.05rem;
+  color: #444;
+  font-weight: 500;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  transition: box-shadow 0.2s;
+}
+.google-sync-btn:hover {
+  box-shadow: 0 4px 16px rgba(0,0,0,0.10);
+}
+
+.calendar-table {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  margin-top: 8px;
+}
+.calendar-week {
+  display: flex;
+  flex-direction: row;
+}
+.calendar-cell {
+  width: 120px;
+  height: 100px;
+  background: #fafbfc;
+  border: 1.5px solid #ededed;
+  border-radius: 16px;
+  margin: 6px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  position: relative;
+  font-size: 1.13rem;
+  color: #222;
+  box-sizing: border-box;
+  transition: box-shadow 0.2s;
+}
+.calendar-cell.empty {
+  background: #f6f8f7;
+  border: 1.5px solid #f6f8f7;
+}
+.calendar-day-num {
+  font-size: 1.13rem;
+  font-weight: 700;
+  margin: 14px 0 0 16px;
+  letter-spacing: -1px;
+}
+.calendar-emotions {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-top: 16px;
+  margin-left: 16px;
+}
+.calendar-emotion-bar {
+  width: 60px;
+  height: 13px;
+  border-radius: 8px;
+  margin-bottom: 2px;
+} 

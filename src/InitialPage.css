@@ -1,0 +1,230 @@
+.initial-root {
+  min-height: 100vh;
+  background: #ffffff;
+  display: flex;
+  flex-direction: column;
+}
+
+.main-nav {
+  display: flex;
+  align-items: center;
+  padding: 24px 0 0 40px;
+  background: #ffffff;
+  position: relative;
+  z-index: 100;
+}
+
+.main-logo {
+  width: 110px;
+  margin-right: 60px;
+}
+
+.initial-container {
+  flex: 1;
+  display: flex;
+  gap: 40px;
+  padding: 40px;
+  max-width: 1200px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+.chat-section {
+  flex: 1;
+  background: #F8F8F8;
+  border-radius: 20px;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.chat-message {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+}
+
+.todaki-chat-img {
+  width: 48px;
+  height: 48px;
+}
+
+.message-content {
+  background: #FFFFFF;
+  border-radius: 12px;
+  padding: 12px 16px;
+  max-width: 80%;
+}
+
+.sender {
+  font-size: 0.9rem;
+  color: #666;
+  margin-bottom: 4px;
+}
+
+.text {
+  font-size: 1rem;
+  color: #333;
+  line-height: 1.5;
+}
+
+.input-section {
+  flex: 1;
+  background: #FFF9E7;
+  border-radius: 20px;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.input-group {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.input-group label {
+  font-size: 1.1rem;
+  font-weight: 500;
+  color: #333;
+}
+
+.input-group input {
+  padding: 8px 12px;
+  border: 1px solid #E0E0E0;
+  border-radius: 8px;
+  font-size: 1rem;
+}
+
+.gender-buttons {
+  display: flex;
+  gap: 12px;
+}
+
+.gender-btn {
+  flex: 1;
+  padding: 8px 24px;
+  background: #FFFFFF;
+  border: 1px solid #E0E0E0;
+  border-radius: 8px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.gender-btn.selected {
+  background: #4A90E2;
+  color: white;
+  border-color: #4A90E2;
+}
+
+.worry-categories {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  gap: 12px;
+}
+
+.worry-category-btn {
+  background: #FFFFFF;
+  border: 1px solid #E0E0E0;
+  border-radius: 8px;
+  padding: 8px 16px;
+  font-size: 0.9rem;
+  color: #444;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-align: center;
+}
+
+.worry-category-btn.selected {
+  background: #4A90E2;
+  color: white;
+  border-color: #4A90E2;
+}
+
+.submit-btn {
+  margin-top: auto;
+  padding: 12px;
+  background: #4A90E2;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 1.1rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.submit-btn:disabled {
+  background: #E0E0E0;
+  cursor: not-allowed;
+}
+
+.test-questions {
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+  margin-bottom: 32px;
+}
+
+.test-question-row {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  justify-content: space-between;
+}
+
+.test-question-text {
+  flex: 1;
+  font-size: 1.08rem;
+  color: #333;
+  font-weight: 500;
+}
+
+.test-score-btns {
+  display: flex;
+  gap: 8px;
+}
+
+.test-score-btn {
+  background: #fff;
+  border: 1.5px solid #e0e0e0;
+  border-radius: 8px;
+  padding: 7px 16px;
+  font-size: 1rem;
+  color: #444;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.test-score-btn.selected {
+  background: #4A90E2;
+  color: #fff;
+  border-color: #4A90E2;
+}
+
+@media (max-width: 768px) {
+  .initial-container {
+    flex-direction: column;
+    padding: 20px;
+    gap: 20px;
+  }
+
+  .chat-section {
+    padding: 16px;
+  }
+
+  .input-section {
+    padding: 16px;
+  }
+
+  .worry-categories {
+    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  }
+
+  .worry-category-btn {
+    padding: 8px 12px;
+    font-size: 0.85rem;
+  }
+} 
