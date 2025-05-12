@@ -17,11 +17,14 @@ body, html, #root {
 .main-nav {
   display: flex;
   align-items: center;
-  padding: 0px 0 0 40px;
+  padding: 0px 40px 0 40px;
   background: #ffffff;
   position: relative;
   z-index: 100;
   margin-bottom: 32px;
+  width: 100%;
+  max-width: 1400px;
+  margin: 0 auto 32px auto;
 }
 
 .main-logo {
@@ -31,7 +34,7 @@ body, html, #root {
 
 .main-menu {
   display: flex;
-  gap: 48px;
+  gap: 32px;
   font-size: 1.25rem;
   color: #444;
   font-weight: 500;
@@ -40,6 +43,9 @@ body, html, #root {
 
 .profile-menu { 
   color: #888;
+  margin-left: auto;
+  padding-right: 60px;
+  white-space: nowrap;
 }
 
 .menu-toggle-btn {
@@ -62,12 +68,25 @@ body, html, #root {
   padding-top: 20px;
 }
 
-.main-content {
+.analysis-content {
+  width: 100%;
+  margin: 0 auto;
+  background: #f8f8f8;
+  border-radius: 24px;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.08);
+  padding: 0;
+  box-sizing: border-box;
+  min-height: 800px;
   display: flex;
-  flex: 1;
-  overflow: hidden;
-  position: relative; 
-   
+  flex-direction: row;
+  align-items: stretch;
+  gap: 60px;
+}
+
+.analysis-container {
+  display: flex;
+  width: 100%;
+  min-height: 800px;
 }
 
 .record-section {
@@ -78,8 +97,19 @@ body, html, #root {
   display: flex;
   flex-direction: column;
   overflow-y: auto;
+  overflow-x: visible;
   flex-shrink: 0;
   min-height: 800px;
+}
+
+.analysis-content .chat-section {
+  flex: 1;
+  min-width: 0;
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 48px 60px;
+  position: relative;
+  max-width: 1200px;
 }
 
 .record-title-row {
@@ -130,9 +160,51 @@ body, html, #root {
   box-shadow: 0 1px 4px rgba(0,0,0,0.04);
   cursor: pointer;
   transition: background 0.2s;
+  position: relative;
 } 
 .record-item:hover {
   background: #f3d87e;
+  font-weight: 700;
+}
+
+.record-item.selected {
+  background: #E6F4FF !important;
+  color: #222 !important;
+  font-weight: 700;
+}
+
+.record-item.disabled {
+  background: #fff !important;
+  color: #bbb !important;
+  cursor: not-allowed !important;
+  font-weight: 400 !important;
+  box-shadow: none !important;
+}
+.record-item.disabled:hover {
+  background: #fff !important;
+  color: #bbb !important;
+}
+
+.record-tooltip {
+  position: fixed;
+  background: #f6f8fa;
+  color: #444;
+  font-size: 0.85rem;
+  font-weight: 400;
+  border-radius: 6px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+  padding: 6px 12px;
+  white-space: nowrap;
+  z-index: 9999;
+  pointer-events: none;
+  transform: translate(12px, -50%);
+  max-width: 200px;
+  line-height: 1.4;
+}
+
+.record-tooltip.hidden {
+  opacity: 0;
+  pointer-events: none;
 }
 
 .chat-section {
@@ -147,7 +219,9 @@ body, html, #root {
   padding-left: 30px;
   padding-right: 30px;
   min-height: 700px;
-  
+  position: relative;
+  z-index: 1;
+  margin-right: 20px;
 }
 
 .chat-container {
@@ -558,11 +632,148 @@ body, html, #root {
 }
 
 /* Remove worry categories styles */
-// 아래 worry-categories, worry-category-btn 관련 display: none 코드를 완전히 삭제
 
-.worry-categories,
-.worry-category-btn,
-.worry-category-btn:hover,
-.worry-category-btn:active {
-  display: none;
+
+@media (max-width: 1200px) {
+  .chat-box {
+    min-width: 0;
+    width: 100%;
+    margin: 0 20px;
+  }
+}
+
+@media (max-width: 1024px) {
+  .main-nav {
+    flex-wrap: wrap;
+    padding: 16px 0 0 16px;
+    gap: 12px;
+    flex-direction: row;
+    align-items: center;
+  }
+  .main-logo {
+    width: 80px;
+    margin-right: 16px;
+  }
+  .main-menu {
+    gap: 18px;
+    font-size: 1rem;
+    flex: 1 1 auto;
+    min-width: 0;
+    flex-wrap: wrap;
+    display: flex;
+    align-items: center;
+  }
+  .profile-menu {
+    font-size: 0.98rem;
+    margin-left: 16px;
+    margin-top: 0;
+    align-self: auto;
+    word-break: keep-all;
+    display: inline-block;
+  }
+
+  .menu-toggle-btn {
+    display: block;
+  }
+
+  .mainpage-content {
+    justify-content: flex-start;
+  }
+
+  .record-section {
+    position: fixed;
+    left: 0;
+    top: 80px;
+    bottom: 0;
+    width: 280px;
+    transform: translateX(-100%);
+    transition: transform 0.3s cubic-bezier(0.4,0,0.2,1);
+    z-index: 1000;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+    border-radius: 20px 0 0 20px;
+    background: #fff9e6;
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+  }
+
+  .record-section.show {
+    transform: translateX(0);
+  }
+
+  .record-close-btn {
+    display: block;
+  }
+
+  .chat-section {
+    width: 100%; 
+  }
+
+  .chat-box {
+    margin: 0 20px;
+  }
+}
+
+@media (max-width: 768px) {
+  .main-nav {
+    flex-direction: row;
+    align-items: center;
+    flex-wrap: wrap;
+    padding: 10px 0 0 8px;
+    gap: 6px;
+  }
+  .main-logo {
+    width: 64px;
+    margin-right: 8px;
+    margin-bottom: 0;
+  }
+  .main-menu {
+    gap: 10px;
+    font-size: 0.95rem;
+    flex-direction: row;
+    align-items: center;
+    width: auto;
+    margin-bottom: 0;
+    flex: 1 1 auto;
+    min-width: 0;
+    flex-wrap: wrap;
+    display: flex;
+  }
+  .profile-menu {
+    font-size: 0.95rem;
+    margin-left: 8px;
+    margin-top: 0;
+    align-self: auto;
+    word-break: keep-all;
+    display: inline-block;
+  }
+
+  .chat-box {
+    padding: 24px 20px 20px 20px;
+  }
+
+  .record-section {
+    position: fixed;
+    left: 0;
+    top: 150px;
+    bottom: 0;
+    width: 240px;
+    transform: translateX(-100%);
+    transition: transform 0.3s cubic-bezier(0.4,0,0.2,1);
+    z-index: 1000;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+    border-radius: 20px 0 0 20px;
+    background: #fff9e6;
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+  }
+
+  .record-section.show {
+    transform: translateX(0);
+  }
+
+  .chat-section {
+    width: 100%;
+  }
 } 

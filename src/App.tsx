@@ -8,7 +8,9 @@ import GoalsPage from './pages/GoalsPage';
 import CalendarPage from './pages/CalendarPage';
 import ProfilePage from './pages/ProfilePage';
 import TestPage from './pages/TestPage';
-import LoginPage from './pages/LoginPage';
+import SignupPage from './pages/SignupPage';
+import GoogleCallbackPage from './pages/GoogleCallbackPage';
+import TestCompletePage from './pages/TestCompletePage';
 import './App.css';
 
 function App() {
@@ -16,7 +18,7 @@ function App() {
     <Router>
       <Routes>
         <Route path="/" element={<LandingPage />} />
-        <Route path="/login" element={<LoginPage />} />
+        <Route path="/signup" element={<SignupPage />} />
         <Route path="/initial" element={<InitialPage />} />
         <Route path="/main" element={<MainPage />} />
         <Route path="/analysis" element={<AnalysisPage />} />
@@ -24,6 +26,8 @@ function App() {
         <Route path="/calendar" element={<CalendarPage />} />
         <Route path="/profile" element={<ProfilePage />} />
         <Route path="/test" element={<TestPage />} />
+        <Route path="/test-complete" element={<TestCompletePage />} />
+        <Route path="/auth/google/callback" element={<GoogleCallbackPage />} />
       </Routes>
     </Router>
   );

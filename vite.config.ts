@@ -7,4 +7,7 @@ export default defineConfig({
     react(),
     tailwindcss(), // Tailwind 플러그인 추가
   ],
+  server: {
+    port: 5173, // 개발 서버 포트 5173으로 변경
+  },
 });

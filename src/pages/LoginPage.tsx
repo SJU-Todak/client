@@ -9,8 +9,7 @@ const LoginPage: React.FC = () => {
   const [password, setPassword] = useState('');
 
   const handleGoogleLogin = () => {
-    // 실제 구글 OAuth 연동 대신, 로그인 성공 시 바로 /initial로 이동
-    navigate('/initial');
+    window.location.href = 'https://test-sso.online/auth/google';
   };
 
   return (
@@ -25,6 +24,7 @@ const LoginPage: React.FC = () => {
           <img src={googleLoginImg} alt="Google" style={{width:28}} />
           Google 계정으로 로그인
         </button>
+        
         <div style={{width:'100%',display:'flex',flexDirection:'column',gap:16,marginTop:12}}>
           <input
             type="text"
@@ -41,6 +41,17 @@ const LoginPage: React.FC = () => {
             style={{padding:'12px',border:'1.5px solid #eee',borderRadius:8,fontSize:'1rem'}}
           />
         </div>
+        <button
+          style={{width:'100%',padding:'12px 0',background:'#4A90E2',color:'#fff',border:'none',borderRadius:8,fontSize:'1.08rem',fontWeight:500,cursor:'pointer',transition:'background 0.2s'}}
+        >
+          로그인
+        </button>
+        <span
+          style={{color:'#3a7bd5',textDecoration:'underline',cursor:'pointer',fontWeight:500,fontSize:'1rem'}}
+          onClick={() => navigate('/signup')}
+        >
+          회원가입
+        </span>
       </div>
     </div>
   );

@@ -8,6 +8,8 @@ import todakiImg from '../assets/todaki.png';
 interface Message {
   from: 'user' | 'persona' | 'todaki';
   text: string;
+  personaName?: string;
+  personaImg?: string;
 }
 
 interface Persona {
@@ -25,19 +27,19 @@ const personaList: Persona[] = [
   {
     name: '민지원',
     desc: '8세 남자아이',
-    detail: '에너지가 넘치고 낙천적이며 밝은 기운을 가지고 있어요.\n말을 편하게 잘하고, 항상 응원을 해주고, 공감도 잘 해요.\n너무 솔직해서 어른스러운 생각은 하지 않아요.',
+    detail: '에너지가 넘치고 낙천적이며 밝은 기운을 가졌어요. 말투는 해맑고 순수하며, 항상 반말을 사용하고 문장은 짧고 단순합니다. 너무 깊은 분석이나 어른스러운 충고는 하지 않아요. 대신 아이의 시선으로 단순하게, 긍정적인 힘을 주는 말로 도와줘요.',
     img: 'https://em-content.zobj.net/source/apple/354/boy_1f466.png',
   },
   {
     name: '한여름',
     desc: '26세 여자',
-    detail: '가까운 친구처럼 따뜻한 분위기를 만들며, 마음을 읽어주고 들어주는 소질이 도와드려요.\n부드럽고 지지스러운 말투에 안전함을 사용해요.\n정신적 안정과 위로, 위로와 현실적인 조언을 함께 건네요.',
+    detail: '가까운 친구처럼 편안한 분위기를 만들며, 어려운 이야기도 털어놓을 수 있게 도와줘요. 부드럽고 자연스러운 반말이나 반존대를 사용해요. 상대의 감정을 잘 받아주며, 위로와 현실적인 조언을 함께 전해요.',
     img: 'https://em-content.zobj.net/source/apple/354/woman_1f469.png',
   },
   {
     name: '김서연',
     desc: '55세 심리상담 전문가',
-    detail: '오랜 임상 경험과 상담 이론 지식을 갖춘 전문 심리상담가입니다.\n일류는 신뢰감 있고 진중하며, 쉬운 용어와 기법을 설명하면서도 사용자가 이해할 수 있도록 배려하는 톤을 유지해요.\n사용자가 스스로 감정을 이해하며 건강한 방향으로 나아가게 도와요.',
+    detail: '오랜 임상 경험과 상담 이론 지식을 갖춘 전문 심리상담가입니다. 말투는 신뢰감 있고 단정하며, 전문 용어와 개념을 사용하면서도 사용자가 이해할 수 있도록 배려하는 설명을 덧붙여요. 사용자가 스스로 감정을 이해하며 건강한 방향으로 나아가게 도와요.',
     img: 'https://em-content.zobj.net/source/apple/354/woman-teacher_1f469-200d-1f3eb.png',
   },
 ];
@@ -85,24 +87,29 @@ const MainPage: React.FC = () => {
   const [isTyping, setIsTyping] = useState(false);
   const [streamingText, setStreamingText] = useState('');
   const [showRecord, setShowRecord] = useState(false);
+  const [showPersonaModal, setShowPersonaModal] = useState(false);
+  const [isRecording, setIsRecording] = useState(false);
+  const recognitionRef = useRef<any>(null);
   const chatEndRef = useRef<HTMLDivElement>(null);
   const listRef = useRef<List>(null);
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
 
   const toggleRecord = () => {
     setShowRecord(!showRecord);
   };
 
   useEffect(() => {
-    if (selectedPersona && listRef.current) {
-      listRef.current.scrollToItem(messages.length, 'end');
+    if (selectedPersona && listRef.current && messages.length > 0) {
+      listRef.current.scrollToItem(messages.length - 1, 'end');
+      setTimeout(() => {
+        const container = scrollContainerRef.current;
+        if (container && container.scrollHeight > container.clientHeight) {
+          // @ts-expect-error
+          listRef.current.scrollTo(container.scrollTop + 30);
+        }
+      }, 0);
     }
   }, [messages, selectedPersona, streamingText]);
-
-  useEffect(() => {
-    if (chatEndRef.current) {
-      chatEndRef.current.scrollIntoView({ behavior: 'smooth' });
-    }
-  }, [messages, streamingText]);
 
   const handleSend = () => {
     if (!input.trim()) return;
@@ -126,7 +133,9 @@ const MainPage: React.FC = () => {
           setIsTyping(false);
           setMessages(prev => [
             ...prev,
-            { from: 'persona', text: fullText }
+            selectedPersona
+              ? { from: 'persona', text: fullText, personaName: selectedPersona.name, personaImg: selectedPersona.img }
+              : { from: 'persona', text: fullText }
           ]);
           setStreamingText('');
         }
@@ -139,15 +148,53 @@ const MainPage: React.FC = () => {
     if (e.key === 'Enter') handleSend();
   };       
 
+  // 음성 인식 시작/종료
+  const handleMicClick = () => {
+    if (!('webkitSpeechRecognition' in window || 'SpeechRecognition' in window)) {
+      alert('이 브라우저는 음성 인식을 지원하지 않습니다.');
+      return;
+    }
+    if (isRecording) {
+      recognitionRef.current && recognitionRef.current.stop();
+      setIsRecording(false);
+      return;
+    }
+    const SpeechRecognition = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
+    const recognition = new SpeechRecognition();
+    recognition.lang = 'ko-KR';
+    recognition.interimResults = false;
+    recognition.maxAlternatives = 1;
+    recognition.onresult = (event: any) => {
+      const transcript = event.results[0][0].transcript;
+      setInput(transcript);
+      setIsRecording(false);
+    };
+    recognition.onerror = () => {
+      setIsRecording(false);
+      alert('음성 인식에 실패했습니다.');
+    };
+    recognition.onend = () => setIsRecording(false);
+    recognitionRef.current = recognition;
+    recognition.start();
+    setIsRecording(true);
+  };
 
+  // 페르소나 변경 버튼 클릭 시 모달 표시
+  const handlePersonaBtnClick = () => {
+    setShowPersonaModal(true);
+  };
+  // 모달에서 페르소나 선택 시 페르소나만 변경(대화 유지)
+  const handlePersonaChange = (persona: Persona) => {
+    setSelectedPersona(persona);
+    setShowPersonaModal(false);
+  };
 
   // 페르소나 선택 시 초기 메시지 추가
   const handlePersonaSelect = (persona: Persona) => {
     setSelectedPersona(persona);
     setMessages([
-      { from: 'persona', text: `${persona.name}입니다! 무엇이 궁금한가요?` }
+      { from: 'persona', text: `${persona.name}입니다! 무엇이 궁금한가요?`, personaName: persona.name, personaImg: persona.img }
     ]);
-    
   };
 
   // 기록 클릭 핸들러 추가
@@ -155,10 +202,13 @@ const MainPage: React.FC = () => {
     const persona = record.includes('지원이') ? personaList[0] :
                    record.includes('여름씨') ? personaList[1] :
                    record.includes('서연쌤') ? personaList[2] : null;
-    
     if (persona && recordMessages[record]) {
       setSelectedPersona(persona);
-      setMessages(recordMessages[record]);
+      setMessages(recordMessages[record].map(msg =>
+        msg.from === 'persona'
+          ? { ...msg, personaName: persona.name, personaImg: persona.img }
+          : msg
+      ));
       setShowRecord(false);
     }
   };
@@ -186,10 +236,10 @@ const MainPage: React.FC = () => {
       return (
         <div key={index} className="msg-todaki" style={{ ...style }}>
           <div className="persona-avatar-block">
-            <img src={selectedPersona ? selectedPersona.img : todakiImg} alt="토닥이" className="persona-avatar-img" />
+            <img src={msg.personaImg || todakiImg} alt={msg.personaName || '토닥이'} className="persona-avatar-img" />
           </div>
           <div className="msg-todaki-content">
-            <div className="persona-avatar-name">{selectedPersona ? selectedPersona.name : '토닥이'}</div>
+            <div className="persona-avatar-name">{msg.personaName || '토닥이'}</div>
             <span className="persona-bubble" style={{whiteSpace: 'pre-line'}}>{msg.text.replace(/\\n/g, '\n')}</span>
           </div>
         </div>
@@ -221,7 +271,7 @@ const MainPage: React.FC = () => {
           <span onClick={() => navigate('/calendar')} style={{cursor:'pointer'}}>캘린더</span>
           <span onClick={() => navigate('/test')} style={{cursor:'pointer'}}>심리검사</span>
         </div>
-        <span className="profile-menu" style={{cursor:'pointer'}} onClick={() => navigate('/profile')}>프로필</span>
+        <span className="profile-menu" style={{cursor:'pointer', marginLeft: 'auto', paddingRight: '20px'}} onClick={() => navigate('/profile')}>프로필</span>
       </nav>
       <div className="mainpage-content">
         <aside className={`record-section ${showRecord ? 'show' : ''}`}>
@@ -300,7 +350,11 @@ const MainPage: React.FC = () => {
             {/* 페르소나 선택 후 대화 (가상 스크롤) */}
             {selectedPersona && (
               <>
-                <div className="chat-messages custom-scrollbar" style={{flex: 1, overflowY: 'auto', marginBottom: 18, height: 400, paddingRight: 2}}>
+                <div
+                  ref={scrollContainerRef}
+                  className="chat-messages custom-scrollbar"
+                  style={{flex: 1, overflowY: 'auto', marginBottom: 18, height: 400, paddingRight: 2}}
+                >
                   <List
                     ref={listRef}
                     height={730}
@@ -310,18 +364,52 @@ const MainPage: React.FC = () => {
                   >
                     {renderRow}
                   </List>
-                  <div ref={chatEndRef} />
                 </div>
                 <div className="chat-input-row">
+                  <button
+                    className="persona-btn"
+                    title="페르소나 변경"
+                    style={{marginRight:8,background:'none',border:'none',cursor:'pointer',fontSize:22}}
+                    onClick={handlePersonaBtnClick}
+                    disabled={isTyping}
+                  >
+                    <span role="img" aria-label="persona">👤</span>
+                  </button>
+                  <button
+                    className="record-btn"
+                    title={isRecording ? '녹음 중지' : '음성 입력'}
+                    style={{marginRight:8,background:'none',border:'none',cursor:'pointer',fontSize:22,color:isRecording?'#4A90E2':'#888'}}
+                    onClick={handleMicClick}
+                    disabled={isTyping}
+                  >
+                    <span role="img" aria-label="mic">🎤</span>
+                  </button>
                   <input
                     className="chat-input"
                     placeholder={`${selectedPersona.name}에게 털어놔 봐!`}
                     value={input}
                     onChange={e => setInput(e.target.value)}
                     onKeyDown={handleKeyDown}
+                    disabled={isTyping}
                   />
-                  <button className="mic-btn" onClick={handleSend}>전송</button>
+                  <button className="mic-btn" onClick={handleSend} disabled={isTyping}>전송</button>
                 </div>
+                {/* 페르소나 변경 모달 */}
+                {showPersonaModal && (
+                  <div className="persona-modal-bg" style={{position:'fixed',top:0,left:0,right:0,bottom:0,background:'rgba(0,0,0,0.18)',zIndex:2000,display:'flex',alignItems:'center',justifyContent:'center'}}>
+                    <div className="persona-modal" style={{background:'#fff',borderRadius:18,padding:32,boxShadow:'0 2px 16px rgba(0,0,0,0.13)',display:'flex',gap:24}}>
+                      {personaList.map((p, idx) => (
+                        <div key={idx} className="persona-card" onClick={() => handlePersonaChange(p)} style={{cursor:'pointer',minWidth:160,alignItems:'center',display:'flex',flexDirection:'column'}}>
+                          <img src={p.img} alt={p.name} className="persona-img" />
+                          <div className="persona-name">{p.name}</div>
+                          <div className="persona-desc">{p.desc}</div>
+                          <div className="persona-detail">{p.detail.split('\\n').map((line, i) => <div key={i}>{line}</div>)}</div>
+                        </div>
+                      ))}
+                      <button onClick={()=>setShowPersonaModal(false)} style={{marginLeft:24,background:'#eee',border:'none',borderRadius:8,padding:'8px 18px',cursor:'pointer',fontWeight:500}}>닫기</button>
+                    </div>
+                  </div>
+                )}
               </>
             )}
           </div>

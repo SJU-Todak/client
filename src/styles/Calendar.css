@@ -1,0 +1,92 @@
+.calendar-page {
+  padding: 20px;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.calendar-container {
+  background: white;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.emotion-indicator {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  margin-top: 4px;
+}
+
+.emotion-circle {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  margin: 0 auto;
+}
+
+.emotion-label {
+  font-size: 12px;
+  color: #333;
+  text-align: center;
+  word-break: keep-all;
+}
+
+/* react-calendar 커스텀 스타일 */
+.react-calendar {
+  width: 100%;
+  border: none;
+  font-family: inherit;
+}
+
+.react-calendar__tile {
+  padding: 10px;
+  height: auto;
+  position: relative;
+}
+
+.react-calendar__tile--now {
+  background: #f0f0f0;
+}
+
+.react-calendar__tile--active {
+  background: #e6e6e6;
+}
+
+.react-calendar__tile:hover {
+  background: #f5f5f5;
+}
+
+/* 툴팁 스타일 */
+.calendar-tile {
+  position: relative;
+}
+
+.calendar-tile:hover::after {
+  content: "셀을 누르면 감정을 기록할 수 있어요.";
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: rgba(0, 0, 0, 0.8);
+  color: white;
+  padding: 8px 12px;
+  border-radius: 4px;
+  font-size: 12px;
+  white-space: nowrap;
+  z-index: 1000;
+  margin-bottom: 5px;
+}
+
+.calendar-tile:hover::before {
+  content: "";
+  position: absolute;
+  bottom: calc(100% - 5px);
+  left: 50%;
+  transform: translateX(-50%);
+  border-width: 5px;
+  border-style: solid;
+  border-color: rgba(0, 0, 0, 0.8) transparent transparent transparent;
+  z-index: 1000;
+} 

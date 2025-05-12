@@ -1,0 +1,81 @@
+.emotion-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.emotion-modal {
+  background: white;
+  padding: 20px;
+  border-radius: 10px;
+  width: 90%;
+  max-width: 500px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.emotion-modal h2 {
+  text-align: center;
+  margin-bottom: 20px;
+  color: #333;
+}
+
+.emotion-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.emotion-button {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 10px;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  background: white;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.emotion-button:hover {
+  background: #f5f5f5;
+  transform: translateY(-2px);
+}
+
+.emotion-circle {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+}
+
+.emotion-button span {
+  font-size: 14px;
+  color: #333;
+  text-align: center;
+}
+
+.close-button {
+  display: block;
+  width: 100%;
+  padding: 10px;
+  background: #f0f0f0;
+  border: none;
+  border-radius: 5px;
+  color: #333;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.close-button:hover {
+  background: #e0e0e0;
+} 

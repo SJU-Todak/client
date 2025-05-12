@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../InitialPage.css';
 import logoImg from '../assets/logo.png';
@@ -17,11 +17,32 @@ const worryCategories = [
   { id: 'health', label: '생활습관 / 신체 문제' }
 ];
 
+const chatMessages = [
+  {
+    sender: '토닥이',
+    text: '안녕! 나는 토닥이야.\n너의 마음을 토닥토닥 해 줄게.'
+  },
+  {
+    sender: '토닥이',
+    text: '이야기 나누기 전에,\n몇 가지 질문에 대답해 줄래?'
+  }
+];
+
 const InitialPage: React.FC = () => {
   const navigate = useNavigate();
   const [age, setAge] = useState('');
   const [gender, setGender] = useState('');
   const [selectedWorries, setSelectedWorries] = useState<string[]>([]);
+  const [visibleMessages, setVisibleMessages] = useState<number>(1);
+
+  useEffect(() => {
+    if (visibleMessages < chatMessages.length) {
+      const timer = setTimeout(() => {
+        setVisibleMessages(visibleMessages + 1);
+      }, 900);
+      return () => clearTimeout(timer);
+    }
+  }, [visibleMessages]);
 
   const handleWorrySelect = (category: string) => {
     if (selectedWorries[0] === category) {
@@ -50,20 +71,17 @@ const InitialPage: React.FC = () => {
       </nav>
       <div className="initial-container">
         <div className="chat-section">
-          <div className="chat-message">
-            <img src={todakiImg} alt="토닥이" className="todaki-chat-img" />
-            <div className="message-content">
-              <div className="sender">토닥이</div>
-              <div className="text">안녕! 나는 토닥이야.<br/>너의 이야기를 토닥토닥 해 줄게.</div>
+          {chatMessages.slice(0, visibleMessages).map((msg, idx) => (
+            <div className="chat-message" key={idx}>
+              <img src={todakiImg} alt="토닥이" className="todaki-chat-img" />
+              <div style={{display:'flex', flexDirection:'column', alignItems:'flex-start'}}>
+                <span className="sender" style={{fontWeight:400, fontSize:'0.93rem', marginBottom:2, marginLeft:2}}>{msg.sender}</span>
+                <div className={"message-content chat-message-appear"}>
+                  <div className="text">{msg.text.split('\n').map((line, i) => <span key={i}>{line}<br/></span>)}</div>
+                </div>
+              </div>
             </div>
-          </div>
-          <div className="chat-message">
-            <img src={todakiImg} alt="토닥이" className="todaki-chat-img" />
-            <div className="message-content">
-              <div className="sender">토닥이</div>
-              <div className="text">이야기 나누기 전에,<br/>몇 가지 질문에 대답해 줄래?</div>
-            </div>
-          </div>
+          ))}
         </div>
         <div className="input-section">
           <div className="input-group">
