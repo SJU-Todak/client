@@ -91,7 +91,4 @@ https://github.com/user-attachments/assets/1b5c2882-dcbb-4a82-9714-a6a722a7cf99
 
 #### 🧠 5. Psychological Testing
 <img width="725" alt="screenshot" src="https://github.com/user-attachments/assets/7ab7b19e-2fd1-434c-8734-3ace60640798" />  
-
----
-
-### 🗺️
+ 
